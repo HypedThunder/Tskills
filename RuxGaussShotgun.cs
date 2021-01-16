@@ -12,16 +12,17 @@ namespace EntityStates.Engi.EngiWeapon.Rux
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			this.maxDuration = 0.9f / this.attackSpeedStat;
-			this.minDuration = 0.7f / this.attackSpeedStat;
+			this.maxDuration = 0.8f / this.attackSpeedStat;
+			this.minDuration = 0.8f / this.attackSpeedStat;
 			Ray aimRay = base.GetAimRay();
 			base.StartAimMode(aimRay, 2f, false);
 			Util.PlaySound(FireGauss.attackSoundString, base.gameObject);
 			base.PlayCrossfade("Gesture, Right Cannon", "FireGrenadeRight", 0.1f);
-			string muzzleName = "MuzzleRight";
-			if (RuxGaussShotgun.effectPrefab)
+			base.PlayCrossfade("Gesture, Left Cannon", "FireGrenadeLeft", 0.1f);
+			string muzzleName = "MuzzleCenter";
+			if (FireGauss.effectPrefab)
 			{
-				EffectManager.SimpleMuzzleFlash(FireShotgun.effectPrefab, base.gameObject, muzzleName, false);
+				EffectManager.SimpleMuzzleFlash(FireGauss.effectPrefab, base.gameObject, muzzleName, false);
 			}
 			if (base.isAuthority)
 			{
@@ -31,11 +32,11 @@ namespace EntityStates.Engi.EngiWeapon.Rux
 					weapon = base.gameObject,
 					origin = aimRay.origin,
 					aimVector = aimRay.direction,
-					minSpread = 1f,
-					maxSpread = 10f,
+					minSpread = 2f,
+					maxSpread = 7f,
 					bulletCount = 7,
 					procCoefficient = 0.7f,
-					damage = 0.85f * this.damageStat,
+					damage = 0.8f * this.damageStat,
 					damageType = DamageType.Generic,
 					force = 30f,
 					falloffModel = BulletAttack.FalloffModel.DefaultBullet,

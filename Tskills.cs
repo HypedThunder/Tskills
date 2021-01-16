@@ -1,13 +1,12 @@
 ﻿using System;
 using BepInEx;
 using EntityStates;
-using EntityStates.Captain.Weapon.Rux4;
 using EntityStates.Commando.CommandoWeapon.Rux;
 using EntityStates.Commando.CommandoWeapon.Rux3;
 using EntityStates.Croco.Rux;
 using EntityStates.Croco.Rux2;
 using EntityStates.Engi.EngiWeapon.Rux;
-using EntityStates.Loader.Rux;
+using EntityStates.Rux;
 using EntityStates.Mage.Weapon.Rux;
 using R2API;
 using R2API.Utils;
@@ -19,7 +18,7 @@ namespace TsunamiSkills
 {
 	// Token: 0x02000002 RID: 2
 	[BepInDependency("com.bepis.r2api")]
-	[BepInPlugin("com.Ruxbieno.TsunamiSkills", "Tsunami Skills", "1.0.1")]
+	[BepInPlugin("com.Ruxbieno.TsunamiSkills", "Tsunami Skills", "0.1.0")]
 	[R2APISubmoduleDependency(new string[]
 	{
 		"LoadoutAPI",
@@ -33,7 +32,6 @@ namespace TsunamiSkills
 		{
 			Resources.Load<GameObject>("prefabs/projectiles/Rocket").AddComponent<CapsuleCollider>();
 			GameObject gameObject = UnityEngine.Resources.Load<GameObject>("prefabs/characterbodies/MageBody");
-			GameObject gameObject2 = UnityEngine.Resources.Load<GameObject>("prefabs/characterbodies/CaptainBody");
 			GameObject gameObject3 = UnityEngine.Resources.Load<GameObject>("prefabs/characterbodies/CommandoBody");
 			GameObject gameObject4 = UnityEngine.Resources.Load<GameObject>("prefabs/characterbodies/EngiBody");
 			GameObject gameObject5 = UnityEngine.Resources.Load<GameObject>("prefabs/characterbodies/CrocoBody");
@@ -71,39 +69,6 @@ namespace TsunamiSkills
 				unlockableName = "1",
 				viewableNode = new ViewablesCatalog.Node(skillDef.skillNameToken, false, null)
 			};
-			LanguageAPI.Add("CAPTAIN_PRIMARY_MINIGUN_NAME", "Full-Auto");
-			LanguageAPI.Add("CAPTAIN_PRIMARY_MINIGUN_DESCRIPTION", "Charge up and rapidly fire bullets, dealing <style=cIsDamage>45% damage</style>.");
-			SkillDef skillDef2 = ScriptableObject.CreateInstance<SkillDef>();
-			skillDef2.activationState = new SerializableEntityStateType(typeof(RuxFullAutoSpinUp));
-			skillDef2.activationStateMachineName = "Weapon";
-			skillDef2.baseMaxStock = 1;
-			skillDef2.baseRechargeInterval = 0f;
-			skillDef2.beginSkillCooldownOnSkillEnd = true;
-			skillDef2.canceledFromSprinting = false;
-			skillDef2.fullRestockOnAssign = false;
-			skillDef2.interruptPriority = InterruptPriority.Any;
-			skillDef2.isBullets = false;
-			skillDef2.isCombatSkill = true;
-			skillDef2.mustKeyPress = false;
-			skillDef2.noSprint = false;
-			skillDef2.rechargeStock = 1;
-			skillDef2.requiredStock = 1;
-			skillDef2.shootDelay = 0f;
-			skillDef2.stockToConsume = 1;
-			skillDef2.skillDescriptionToken = "CAPTAIN_PRIMARY_MINIGUN_DESCRIPTION";
-			skillDef2.skillName = "CAPTAIN_PRIAMRY_MINIGUN_NAME";
-			skillDef2.skillNameToken = "CAPTAIN_PRIMARY_MINIGUN_NAME";
-
-			LoadoutAPI.AddSkillDef(skillDef2);
-			SkillLocator component2 = gameObject2.GetComponent<SkillLocator>();
-			SkillFamily skillFamily2 = component2.primary.skillFamily;
-			Array.Resize<SkillFamily.Variant>(ref skillFamily2.variants, skillFamily2.variants.Length + 1);
-			skillFamily2.variants[skillFamily2.variants.Length - 1] = new SkillFamily.Variant
-			{
-				skillDef = skillDef2,
-				unlockableName = "2",
-				viewableNode = new ViewablesCatalog.Node(skillDef2.skillNameToken, false, null)
-			};
 			LanguageAPI.Add("COMMANDO_SECONDARY_MICROMISSILES_NAME", "Micro Missiles");
 			LanguageAPI.Add("COMMANDO_SECONDARY_MICROMISSILES_DESCRIPTION", "Charge up and fire a barrage of missiles, dealing <style=cIsDamage>200% damage</style> each with a maximum of 8.");
 			SkillDef skillDef3 = ScriptableObject.CreateInstance<SkillDef>();
@@ -137,7 +102,7 @@ namespace TsunamiSkills
 				viewableNode = new ViewablesCatalog.Node(skillDef3.skillNameToken, false, null)
 			};
 			LanguageAPI.Add("ENGI_PRIMARY_SHOTGUN_NAME", "Gauss Shotgun");
-			LanguageAPI.Add("ENGI_PRIMARY_SHOTGUN_DESCRIPTION", "Fire a blast of gauss bullets, dealing <style=cIsDamage>7x85% damage</style>.");
+			LanguageAPI.Add("ENGI_PRIMARY_SHOTGUN_DESCRIPTION", "Fire a blast of gauss bullets, dealing <style=cIsDamage>7x80% damage</style>.");
 			SkillDef skillDef4 = ScriptableObject.CreateInstance<SkillDef>();
 			skillDef4.activationState = new SerializableEntityStateType(typeof(RuxGaussShotgun));
 			skillDef4.activationStateMachineName = "Weapon";
@@ -169,13 +134,13 @@ namespace TsunamiSkills
 				unlockableName = "4",
 				viewableNode = new ViewablesCatalog.Node(skillDef.skillNameToken, false, null)
 			};
-			LanguageAPI.Add("COMMANDO_ULTIMATE_PILL_NAME", "Volatile Shell");
-			LanguageAPI.Add("COMMANDO_ULTIMATE_PILL_DESCRIPTION", "Fire a heavy explosive shell from your pistol, dealing <style=cIsDamage>650% damage</style> in a large aoe.");
+			LanguageAPI.Add("COMMANDO_ULTIMATE_PILL_NAME", "Sweep Barrage");
+			LanguageAPI.Add("COMMANDO_ULTIMATE_PILL_DESCRIPTION", "Fire a heavy shot for each enemy in your vision, dealing <style=cIsDamage>400% damage</style>.");
 			SkillDef skillDef5 = ScriptableObject.CreateInstance<SkillDef>();
-			skillDef5.activationState = new SerializableEntityStateType(typeof(RuxVolatileShell));
+			skillDef5.activationState = new SerializableEntityStateType(typeof(RuxSweepBarrage));
 			skillDef5.activationStateMachineName = "Weapon";
 			skillDef5.baseMaxStock = 1;
-			skillDef5.baseRechargeInterval = 7f;
+			skillDef5.baseRechargeInterval = 8f;
 			skillDef5.beginSkillCooldownOnSkillEnd = true;
 			skillDef5.canceledFromSprinting = false;
 			skillDef5.fullRestockOnAssign = false;
@@ -202,46 +167,13 @@ namespace TsunamiSkills
 				unlockableName = "5",
 				viewableNode = new ViewablesCatalog.Node(skillDef.skillNameToken, false, null)
 			};
-			LanguageAPI.Add("CROCO_PRIMARY_CRUNCH_NAME", "Venomous Crunch");
-			LanguageAPI.Add("CROCO_PRIMARY_CRUNCH_DESCRIPTION", "Chomp down with crushing force, dealing <style=cIsDamage>220% damage</style> and poisoning enemies hit.");
-			SkillDef skillDef6 = ScriptableObject.CreateInstance<SkillDef>();
-			skillDef6.activationState = new SerializableEntityStateType(typeof(RuxCrunch));
-			skillDef6.activationStateMachineName = "Weapon";
-			skillDef6.baseMaxStock = 1;
-			skillDef6.baseRechargeInterval = 0f;
-			skillDef6.beginSkillCooldownOnSkillEnd = true;
-			skillDef6.canceledFromSprinting = false;
-			skillDef6.fullRestockOnAssign = false;
-			skillDef6.interruptPriority = InterruptPriority.Any;
-			skillDef6.isBullets = false;
-			skillDef6.isCombatSkill = true;
-			skillDef6.mustKeyPress = false;
-			skillDef6.noSprint = true;
-			skillDef6.rechargeStock = 1;
-			skillDef6.requiredStock = 1;
-			skillDef6.shootDelay = 0f;
-			skillDef6.stockToConsume = 1;
-			skillDef6.skillDescriptionToken = "CROCO_PRIMARY_CRUNCH_DESCRIPTION";
-			skillDef6.skillName = "CROCO_PRIMARY_CRUNCH_NAME";
-			skillDef6.skillNameToken = "CROCO_PRIMARY_CRUNCH_NAME";
-
-			LoadoutAPI.AddSkillDef(skillDef6);
-			SkillLocator component6 = gameObject5.GetComponent<SkillLocator>();
-			SkillFamily skillFamily6 = component6.primary.skillFamily;
-			Array.Resize<SkillFamily.Variant>(ref skillFamily6.variants, skillFamily6.variants.Length + 1);
-			skillFamily6.variants[skillFamily6.variants.Length - 1] = new SkillFamily.Variant
-			{
-				skillDef = skillDef6,
-				unlockableName = "6",
-				viewableNode = new ViewablesCatalog.Node(skillDef.skillNameToken, false, null)
-			};
 			LanguageAPI.Add("CROCO_SPECIAL_BLIGHT_NAME", "Extinction Breath");
 			LanguageAPI.Add("CROCO_SPECIAL_BLIGHT_DESCRIPTION", "Release a poisonous blast of envenoming spit from your mouth, dealing <style=cIsDamage>60% damage</style> per tick and poisoning enemies hit.");
 			SkillDef skillDef7 = ScriptableObject.CreateInstance<SkillDef>();
 			skillDef7.activationState = new SerializableEntityStateType(typeof(RuxExtinctionBreath));
 			skillDef7.activationStateMachineName = "Weapon";
 			skillDef7.baseMaxStock = 1;
-			skillDef7.baseRechargeInterval = 9f;
+			skillDef7.baseRechargeInterval = 8f;
 			skillDef7.beginSkillCooldownOnSkillEnd = true;
 			skillDef7.canceledFromSprinting = false;
 			skillDef7.fullRestockOnAssign = false;
@@ -269,7 +201,7 @@ namespace TsunamiSkills
 				viewableNode = new ViewablesCatalog.Node(skillDef.skillNameToken, false, null)
 			};
 			LanguageAPI.Add("LOADER_ULTIMATE_PUNCH_NAME", "Electroboom");
-			LanguageAPI.Add("LOADER_ULTIMATE_PUNCH_DESCRIPTION", "Swing your fist with extreme force, dealing <style=cIsDamage>900% damage</style> in a large aoe while releasing chain lightning.");
+			LanguageAPI.Add("LOADER_ULTIMATE_PUNCH_DESCRIPTION", "Swing your fist with extreme force, dealing <style=cIsDamage>1000% damage</style> in a large aoe while releasing chain lightning.");
 			SkillDef skillDef8 = ScriptableObject.CreateInstance<SkillDef>();
 			skillDef8.activationState = new SerializableEntityStateType(typeof(RuxElectroboom));
 			skillDef8.activationStateMachineName = "Weapon";

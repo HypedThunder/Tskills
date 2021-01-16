@@ -7,7 +7,7 @@ using RoR2.Projectile;
 using UnityEngine;
 using EntityStates.Loader;
 
-namespace EntityStates.Loader.Rux
+namespace EntityStates.Rux
 {
 	// Token: 0x020009C2 RID: 2498
 	public class RuxElectroboom : LoaderMeleeAttack
@@ -27,13 +27,9 @@ namespace EntityStates.Loader.Rux
 		{
 			base.OnEnter();
 			base.characterMotor.velocity.y = BigPunch.shorthopVelocityOnEnter;
-		}
-
-		// Token: 0x060039B9 RID: 14777 RVA: 0x000ECB6D File Offset: 0x000EAD6D
-		protected override void PlayAnimation()
-		{
 			base.PlayAnimation();
 			base.PlayAnimation("FullBody, Override", "BigPunch", "BigPunch.playbackRate", this.duration);
+			Debug.Log("checking...");
 		}
 
 		// Token: 0x060039BA RID: 14778 RVA: 0x000ECB90 File Offset: 0x000EAD90
